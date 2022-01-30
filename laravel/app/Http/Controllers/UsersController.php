@@ -23,5 +23,16 @@ class UsersController extends Controller
                                 ->join('history_illness','snot','=','sn_owner')
                                 ->select('illness.name of illness','history_illness.id_owner','history_illness.name_expert')
                                 ->get() ;
+        return $var3 ;
+    }
+    public function query4()
+    {
+        $var4=DB::table('treatments')
+                                    ->join('providing_traetment','snot','=','snt')
+                                    ->select('providing_traetment.id','treatments.name of treatment')
+                                    ->groupBy('providing_traetment.id')
+                                    ->having('providing_traetment.point','>',3)
+                                    ->get() ;
+        return $var4 ;
     }
 }
