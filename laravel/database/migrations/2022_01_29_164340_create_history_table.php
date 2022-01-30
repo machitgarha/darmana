@@ -14,12 +14,12 @@ class CreateHistoryTable extends Migration
     public function up()
     {
         Schema::create('history_illness', function (Blueprint $table) {
-                $table->integer('sn_owner')->unsigned()->unique() ;
-                $table->foreign('sn_owner')->references('snoi')->on('illness')->onDelete('cascade') ;
-                $table->integer('id_owner')->unsigned()->unique()->primary() ;
-                $table->date('diagnosis');
-                $table->date('start_treatment') ;
-                $table->string('name_expert',25) ;
+            $table->integer('sn_owner')->unsigned()->unique() ;
+            $table->foreign('sn_owner')->references('snoi')->on('illness')->onDelete('cascade') ;
+            $table->integer('id_owner')->unsigned()->unique()->primary() ;
+            $table->date('diagnosis');
+            $table->date('start_treatment') ;
+            $table->string('name_expert',25) ;
         });
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\CreateUserRequest;
 
 class UsersController extends Controller
 {
@@ -36,69 +37,24 @@ class UsersController extends Controller
         return $var4 ;
     }
 
-    private static function getAllTemperaments(): array
+    public function store(CreateUserRequest $request)
     {
-        return [
-            "Cold & Dry",
-            "Hot & Dry",
-            "Cold & Wet",
-            "Hot & Wet",
-            "Medium",
-        ];
-    }
+        $data = $request->validated();
 
-    private static function getAllCountries(): array
-    {
-        return [
-            "Iran"
-        ];
-    }
-
-    private static function getAllCities(): array
-    {
-        return [
-            "Tehran",
-            "Qazvin",
-            "Hamendan",
-        ];
-    }
-
-    private static function getAllSexes(): array
-    {
-        return ["f", "m"];
-    }
-
-    public function new(
-        string $name,
-        int $id,
-        string $temperament,
-        int $birthYear,
-        int $birthMonth,
-        string $livingCountry,
-        string $livingCity,
-        string $sex,
-    ): bool {
-        if (
-            !in_array($temperament, self::getAllTemperaments(), true) ||
-            // A one day baby is even possible! :)
-            $birthYear > date("Y") ||
-            ($birthMonth < 1 || $birthMonth > 12) ||
-            !in_array($livingCountry, self::getAllCountries(), true) ||
-            !in_array($livingCity, self::getAllCities(), true) ||
-            !in_array($sex, self::getAllSexes(), true)
-        ) {
-            return false;
-        }
-
-        return DB::table("users")->insert([
-            "name" => $name,
-            "user_id" => $id,
-            "Temperament" => $temperament,
-            "year of birth" => $birthYear,
-            "month of birth" => $birthMonth,
-            "country" => $livingCountry,
-            "city" => $livingCity,
-            "sex" => $sex,
+        $isInserted = DB::table('users')->insert([
+            'name' => $data->name,
+            'user_id' => $data->id,
+            'Temperament' => $data->temperament,
+            'year of birth' => $data->birth_year,
+            'month of birth' => $data->birth_month,
+            'country' => $data->living_country,
+            'city' => $data->living_city,
+            'sex' => $data->sex,
         ]);
+
+        return response()->json(
+            ['success' => $isInserted],
+            $isInserted ? 201 : 500
+        );
     }
 }
