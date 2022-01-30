@@ -13,6 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/q1','UsersController@query1') ;
+Route::get('/q2','UsersController@query2') ;
