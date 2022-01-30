@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {
-    public function query1()//--> select * from users 
+    public function query1()//--> select * from users
     {
         $var1=DB::table('users')->get() ;
         return $var1 ;
@@ -34,5 +34,71 @@ class UsersController extends Controller
                                     ->having('providing_traetment.point','>',3)
                                     ->get() ;
         return $var4 ;
+    }
+
+    private static function getAllTemperaments(): array
+    {
+        return [
+            "Cold & Dry",
+            "Hot & Dry",
+            "Cold & Wet",
+            "Hot & Wet",
+            "Medium",
+        ];
+    }
+
+    private static function getAllCountries(): array
+    {
+        return [
+            "Iran"
+        ];
+    }
+
+    private static function getAllCities(): array
+    {
+        return [
+            "Tehran",
+            "Qazvin",
+            "Hamendan",
+        ];
+    }
+
+    private static function getAllSexes(): array
+    {
+        return ["f", "m"];
+    }
+
+    public function new(
+        string $name,
+        int $id,
+        string $temperament,
+        int $birthYear,
+        int $birthMonth,
+        string $livingCountry,
+        string $livingCity,
+        string $sex,
+    ): bool {
+        if (
+            !in_array($temperament, self::getAllTemperaments(), true) ||
+            // A one day baby is even possible! :)
+            $birthYear > date("Y") ||
+            ($birthMonth < 1 || $birthMonth > 12) ||
+            !in_array($livingCountry, self::getAllCountries(), true) ||
+            !in_array($livingCity, self::getAllCities(), true) ||
+            !in_array($sex, self::getAllSexes(), true)
+        ) {
+            return false;
+        }
+
+        return DB::table("users")->insert([
+            "name" => $name,
+            "user_id" => $id,
+            "Temperament" => $temperament,
+            "year of birth" => $birthYear,
+            "month of birth" => $birthMonth,
+            "country" => $livingCountry,
+            "city" => $livingCity,
+            "sex" => $sex,
+        ]);
     }
 }
