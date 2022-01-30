@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class UsersController extends Controller
+{
+    public function query1()//--> select * from users 
+    {
+        $var1=DB::table('users')->get() ;
+        return $var1 ;
+    }
+    public function query2()
+    {
+        $var2=DB::table('users')->select('name','user_id')->distinct('name')->get() ;//-->select (distinct)name user_id from users
+        return $var2 ;
+    }
+    public function query3()
+    {
+        $var3=DB::table('illness')
+                                ->join('history_illness','snot','=','sn_owner')
+                                ->select('illness.name of illness','history_illness.id_owner','history_illness.name_expert')
+                                ->get() ;
+        return $var3 ;
+    }
+    public function query4()
+    {
+        $var4=DB::table('treatments')
+                                    ->join('providing_traetment','snot','=','snt')
+                                    ->select('providing_traetment.id','treatments.name of treatment')
+                                    ->groupBy('providing_traetment.id')
+                                    ->having('providing_traetment.point','>',3)
+                                    ->get() ;
+        return $var4 ;
+    }
+}
