@@ -17,4 +17,11 @@ class UsersController extends Controller
         $var2=DB::table('users')->select('name','user_id')->distinct('name')->get() ;//-->select (distinct)name user_id from users
         return $var2 ;
     }
+    public function query3()
+    {
+        $var3=DB::table('illness')
+                                ->join('history_illness','snot','=','sn_owner')
+                                ->select('illness.name of illness','history_illness.id_owner','history_illness.name_expert')
+                                ->get() ;
+    }
 }
