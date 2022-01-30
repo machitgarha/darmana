@@ -14,8 +14,8 @@ class CreateHistoryTable extends Migration
     public function up()
     {
         Schema::create('history_illness', function (Blueprint $table) {
-                $table->integer('sn_owner')->unsigned()->unique()->primary() ; 
-                $table->foreign('sn_owner')->references('snoi')->on('illness') ;
+                $table->integer('sn_owner')->unsigned()->unique() ;
+                $table->foreign('sn_owner')->references('snoi')->on('illness')->onDelete('cascade') ;
                 $table->integer('id_owner')->unsigned()->unique()->primary() ;
                 $table->date('diagnosis');
                 $table->date('start_treatment') ;
@@ -30,6 +30,9 @@ class CreateHistoryTable extends Migration
      */
     public function down()
     {
+        Schema::table('history_illness', function (Blueprint $table) {
+            $table->dropForeign('sn_owner');
+        });
         Schema::dropIfExists('history_illness');
     }
 }
