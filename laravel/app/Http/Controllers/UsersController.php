@@ -123,8 +123,9 @@ class UsersController extends Controller
     public function destroy(int $id): JsonResponse
     {
         return response()->json([
-            'success' => DB::table('users')
-                ->delete($id),
+            'success' => (bool)DB::table('users')
+                ->where('user_id', '=', $id)
+                ->delete(),
         ]);
     }
 
