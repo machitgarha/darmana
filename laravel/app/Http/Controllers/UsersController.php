@@ -42,14 +42,14 @@ class UsersController extends Controller
         $data = $request->validated();
 
         $isInserted = DB::table('users')->insert([
-            'name' => $data->name,
-            'user_id' => $data->id,
-            'Temperament' => $data->temperament,
-            'year of birth' => $data->birth_year,
-            'month of birth' => $data->birth_month,
-            'country' => $data->living_country,
-            'city' => $data->living_city,
-            'sex' => $data->sex,
+            'name' => $data['name'],
+            'user_id' => $data['id'],
+            'Temperament' => $data['temperament'],
+            'year of birth' => $data['birth_year'],
+            'mounth of birth' => $data['birth_month'],
+            'country' => $data['living_country'],
+            'city' => $data['living_city'],
+            'sex' => $data['sex'],
         ]);
 
         return response()->json(
