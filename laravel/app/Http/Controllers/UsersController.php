@@ -117,6 +117,17 @@ class UsersController extends Controller
         );
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        return response()->json([
+            'success' => DB::table('users')
+                ->delete($id),
+        ]);
+    }
+
     private static function notSupported(): JsonResponse
     {
         return response()->json([
