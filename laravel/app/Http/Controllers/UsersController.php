@@ -47,17 +47,6 @@ class UsersController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create(): JsonResponse
-    {
-        return response()->json([
-            'success' => false,
-            'result' => 'Not supported'
-        ], 501);
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(CreateUserRequest $request): JsonResponse
@@ -92,5 +81,29 @@ class UsersController extends Controller
                 ->where('user_id', '=', $id)
                 ->get(),
         ]);
+    }
+
+    private static function notSupported(): JsonResponse
+    {
+        return response()->json([
+            'success' => false,
+            'result' => 'Not supported'
+        ], 501);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(int $id): JsonResponse
+    {
+        return self::notSupported();
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(): JsonResponse
+    {
+        return self::notSupported();
     }
 }
