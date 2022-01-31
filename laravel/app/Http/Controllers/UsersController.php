@@ -8,11 +8,6 @@ use App\Http\Requests\CreateUserRequest;
 
 class UsersController extends Controller
 {
-    public function query1()//--> select * from users
-    {
-        $var1=DB::table('users')->get() ;
-        return $var1 ;
-    }
     public function query2()
     {
         $var2=DB::table('users')->select('name','user_id')->distinct('name')->get() ;//-->select (distinct)name user_id from users
@@ -35,6 +30,14 @@ class UsersController extends Controller
                                     ->having('providing_traetment.point','>',3)
                                     ->get() ;
         return $var4 ;
+    }
+
+    public function index()
+    {
+        return response()->json([
+            'success' => true,
+            'result' => DB::table('users')->get(),
+        ]);
     }
 
     public function store(CreateUserRequest $request)
