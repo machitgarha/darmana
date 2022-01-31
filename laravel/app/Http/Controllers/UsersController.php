@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\UserRequest;
 use App\Http\Requests\CreateUserRequest;
 
 class UsersController extends Controller
@@ -46,6 +47,30 @@ class UsersController extends Controller
         ]);
     }
 
+    private static function keyMapping(): array
+    {
+        return [
+            'id' => 'user_id',
+            'temperament' => 'Temperament',
+            'birth_year' => 'year of birth',
+            'birth_month' => 'mounth of birth',
+            'living_country' => 'country',
+            'living_city' => 'city',
+        ];
+    }
+
+    private static function exchangeKeys(array $data): array
+    {
+        foreach (self::keyMapping() as $search => $replacement) {
+            if (isset($data[$search])) {
+                $data[$replacement] = $data[$search];
+                unset($data[$search]);
+            }
+        }
+
+        return $data;
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -53,16 +78,8 @@ class UsersController extends Controller
     {
         $data = $request->validated();
 
-        $isInserted = DB::table('users')->insert([
-            'name' => $data['name'],
-            'user_id' => $data['id'],
-            'Temperament' => $data['temperament'],
-            'year of birth' => $data['birth_year'],
-            'mounth of birth' => $data['birth_month'],
-            'country' => $data['living_country'],
-            'city' => $data['living_city'],
-            'sex' => $data['sex'],
-        ]);
+        $isInserted = DB::table('users')
+            ->insert(self::exchangeKeys($data));
 
         return response()->json(
             ['success' => $isInserted],
@@ -81,6 +98,23 @@ class UsersController extends Controller
                 ->where('user_id', '=', $id)
                 ->get(),
         ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UserRequest $request, int $id): JsonResponse
+    {
+        $data = $request->validated();
+        $data['user_id'] = $id;
+
+        $isInserted = (bool)DB::table('users')
+            ->update(self::exchangeKeys($data));
+
+        return response()->json(
+            ['success' => $isInserted],
+            $isInserted ? 201 : 500
+        );
     }
 
     private static function notSupported(): JsonResponse

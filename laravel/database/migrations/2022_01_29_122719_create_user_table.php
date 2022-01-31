@@ -14,7 +14,7 @@ class CreateUserTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->string('name', 25); // --> VARCHAR(size)  name(string)	
+            $table->string('name', 25); // --> VARCHAR(size)  name(string)
             $table->integer('user_id')->unsigned()->unique()->primary();
             $table->string('Temperament',10) ; //---> mazaj(string)
             $table->smallInteger('year of birth'); //--> year(int)
