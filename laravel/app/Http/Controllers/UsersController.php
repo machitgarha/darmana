@@ -40,7 +40,9 @@ class UsersController extends Controller
     {
         return response()->json([
             'success' => true,
-            'result' => DB::table('users')->get(),
+            'result' => DB::table('users')
+                ->orderBy('user_id')
+                ->get(),
         ]);
     }
 
@@ -77,5 +79,18 @@ class UsersController extends Controller
             ['success' => $isInserted],
             $isInserted ? 201 : 500
         );
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(int $id): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'result' => DB::table('users')
+                ->where('user_id', '=', $id)
+                ->get(),
+        ]);
     }
 }
