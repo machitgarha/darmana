@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\CreateUserRequest;
 
@@ -32,7 +33,10 @@ class UsersController extends Controller
         return $var4 ;
     }
 
-    public function index()
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(): JsonResponse
     {
         return response()->json([
             'success' => true,
@@ -40,7 +44,21 @@ class UsersController extends Controller
         ]);
     }
 
-    public function store(CreateUserRequest $request)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(): JsonResponse
+    {
+        return response()->json([
+            'success' => false,
+            'result' => 'Not supported'
+        ], 501);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(CreateUserRequest $request): JsonResponse
     {
         $data = $request->validated();
 
